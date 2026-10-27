@@ -1,0 +1,45 @@
+# ==============================================================================
+# Git Ignore Rules for RetailFix Backend (Render & GitHub)
+# ==============================================================================
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# Environment files & Secrets
+.env
+.env.local
+.env.*.local
+*.env
+!.env.example
+
+# Local SQLite databases
+*.db
+*.sqlite
+*.sqlite3
+
+# Unit test & coverage reports
+.pytest_cache/
+.coverage
+htmlcov/
+
+# IDE & OS metadata
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# Preserved project asset directories
+# GLB models must be preserved and committed for CAD 3D rendering
+!uploads/
+!uploads/models/
+!uploads/models/*.glb
