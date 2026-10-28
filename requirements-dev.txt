@@ -1,0 +1,10 @@
+# ==============================================================================
+# Development and Testing Dependencies for RetailFix Backend
+# ==============================================================================
+
+-r requirements.txt
+
+# Testing Framework & Async ASGI Clients
+pytest>=8.0.0,<10.0.0
+pytest-asyncio>=0.23.0,<2.0.0
+httpx>=0.27.0,<1.0.0

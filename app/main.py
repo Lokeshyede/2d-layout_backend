@@ -89,14 +89,34 @@ app = FastAPI(
     lifespan=lifespan
 )
 
-# CORS Configuration
+from fastapi import Request
+from fastapi.responses import JSONResponse
+
+# Global error handler middleware placed inside CORSMiddleware
+# This ensures that any unhandled exception (e.g. 500) returns a proper JSON response
+# and is wrapped by CORSMiddleware, guaranteeing that Access-Control-Allow-Origin is never missing.
+@app.middleware("http")
+async def cors_exception_middleware(request: Request, call_next):
+    try:
+        return await call_next(request)
+    except Exception as exc:
+        import traceback
+        traceback.print_exc()
+        return JSONResponse(
+            status_code=500,
+            content={"detail": "Internal server error occurred", "error": str(exc)},
+        )
+
+# CORS Configuration (added last so it is the outermost middleware)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=settings.BACKEND_CORS_ORIGINS,
-    allow_origin_regex=r"^https?://(localhost|127\.0\.0\.1|192\.168\.\d+\.\d+|10\.\d+\.\d+\.\d+|172\.(1[6-9]|2\d|3[0-1])\.\d+\.\d+)(:\d+)?$",
+    allow_origin_regex=settings.BACKEND_CORS_ORIGIN_REGEX,
     allow_credentials=True,
-    allow_methods=["*"],
+    allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH", "HEAD"],
     allow_headers=["*"],
+    expose_headers=["*"],
+    max_age=86400,
 )
 
 # Mount uploads static folder
